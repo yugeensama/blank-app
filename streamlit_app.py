@@ -21,8 +21,8 @@ st.markdown("""
     }
     img {
         display: block;
-        margin-left: auto;
-        margin-right: auto;
+        margin-left: 200px;
+        margin-right: 200px;
         max-height: 200px;  /* Aumenta el tamaño del logo */
         margin-bottom: 50px;
     }
