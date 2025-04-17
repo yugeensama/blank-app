@@ -36,7 +36,7 @@ st.markdown("""
 )
 
 # Logo de Tenneco (asegúrate que el PNG esté subido)
-st.image("tenneco_logo.png")
+st.image("tenneco-logo-freelogovectors.net_.png")
 
 # Fecha de inicio
 fecha_inicio = datetime(2022, 5, 10, 8, 0, 0)
