@@ -23,40 +23,40 @@ st.markdown("""
         display: block;
         margin-left: auto;
         margin-right: auto;
-        max-height: 120px;
-        margin-bottom: 30px;
+        max-height: 200px;  /* Aumenta el tamaño del logo */
+        margin-bottom: 50px;
     }
     .contador-container {
         display: flex;
         justify-content: center;
-        gap: 60px;
+        gap: 80px;
         flex-wrap: wrap;
-        margin-top: 2rem;
+        margin-top: 3rem;
     }
     .bloque {
         background-color: #1e222d;
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
+        padding: 60px;
+        border-radius: 30px;  /* Aumento en bordes */
+        box-shadow: 0px 0px 30px rgba(0,0,0,0.3);
         text-align: center;
-        min-width: 140px;
+        min-width: 180px;  /* Aumento en el tamaño de los bloques */
     }
     .valor {
-        font-size: 70px;
+        font-size: 100px;  /* Aumento en el tamaño de los números */
         font-weight: bold;
         color: #2ecc71;
     }
     .etiqueta {
-        font-size: 24px;
+        font-size: 30px;  /* Aumento en el tamaño de la etiqueta */
         color: #bbbbbb;
-        margin-top: 10px;
+        margin-top: 15px;
     }
     .mensaje {
         text-align: center;
-        font-size: 28px;
+        font-size: 36px;  /* Aumento en el tamaño de la frase */
         font-weight: bold;
         color: #ffffff;
-        margin-top: 40px;
+        margin-top: 50px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -65,7 +65,7 @@ st.markdown("""
 st.image("tenneco-logo-freelogovectors.net_.png")
 
 # Fecha de inicio del contador
-fecha_inicio = datetime(2022, 1, 25, 0, 0, 0)
+fecha_inicio = datetime(2022, 5, 10, 8, 0, 0)
 ahora = datetime.now()
 diferencia = relativedelta(ahora, fecha_inicio)
 segundos_totales = int((ahora - fecha_inicio).total_seconds())
@@ -111,6 +111,6 @@ st.markdown(f"""
 # Frase debajo de los contadores
 st.markdown("""
     <div class="mensaje">
-        Sin accidentes reportables desde:
+        Sin accidentes reportables
     </div>
 """, unsafe_allow_html=True)
