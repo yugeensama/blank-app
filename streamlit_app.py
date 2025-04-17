@@ -20,7 +20,6 @@ st.markdown("""
         font-family: 'Segoe UI', sans-serif;
     }
     .logo-container {
-        display: flex;
         justify-content: center;
         margin-bottom: 50px;
     }
