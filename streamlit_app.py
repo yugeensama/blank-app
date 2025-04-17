@@ -19,12 +19,13 @@ st.markdown("""
         padding: 2rem;
         font-family: 'Segoe UI', sans-serif;
     }
-    img {
-        display: block;
-        margin-left: 200px;
-        margin-right: 200px;
-        max-height: 200px;  /* Aumenta el tamaño del logo */
+    .logo-container {
+        display: flex;
+        justify-content: center;
         margin-bottom: 50px;
+    }
+    img {
+        max-height: 200px;  /* Tamaño grande del logo */
     }
     .contador-container {
         display: flex;
@@ -61,8 +62,12 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Logo Tenneco centrado
-st.image("tenneco-logo-freelogovectors.net_.png")
+# Logo Tenneco centrado en un div
+st.markdown("""
+    <div class="logo-container">
+        <img src="tenneco-logo-freelogovectors.net_.png" alt="Tenneco Logo">
+    </div>
+""", unsafe_allow_html=True)
 
 # Fecha de inicio del contador
 fecha_inicio = datetime(2022, 5, 10, 8, 0, 0)
