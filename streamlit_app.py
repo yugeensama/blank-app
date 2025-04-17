@@ -1,70 +1,77 @@
 import streamlit as st
-
-# Configuración de la página (esto siempre primero)
-st.set_page_config(page_title="Contador Tenneco", layout="wide")
-
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from streamlit_autorefresh import st_autorefresh
 
-# Auto-refresh cada segundo
-st_autorefresh(interval=1000, key="contadorrefresh")
+# Configuración de página
+st.set_page_config(page_title="Contador Tenneco", layout="wide")
 
-# CSS para personalizar estilo
+# Refrescar cada segundo
+st_autorefresh(interval=1000, key="auto-refresh")
+
+# Estilos CSS personalizados
 st.markdown("""
     <style>
     .stApp {
-        background-color: #0f1117;
-        color: #ffffff;
-        padding: 2rem;
+        background: linear-gradient(135deg, #1e1e2f, #2e2e3e);
+        color: #f0f0f0;
         font-family: 'Segoe UI', sans-serif;
+        text-align: center;
     }
-    .contador-container {
+
+    .logo-container {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .contador {
         display: flex;
-        justify-content: center;
-        gap: 80px;
         flex-wrap: wrap;
-        margin-top: 3rem;
+        justify-content: center;
+        gap: 40px;
+        margin-top: 30px;
     }
+
     .bloque {
-        background-color: #1e222d;
-        padding: 60px;
-        border-radius: 30px;
-        box-shadow: 0px 0px 30px rgba(0,0,0,0.3);
-        text-align: center;
-        min-width: 180px;
+        background-color: rgba(255, 255, 255, 0.05);
+        padding: 40px 30px;
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.4);
+        min-width: 160px;
     }
+
     .valor {
-        font-size: 100px;
-        font-weight: bold;
-        color: #2ecc71;
+        font-size: 64px;
+        font-weight: 700;
+        color: #4ade80;
     }
+
     .etiqueta {
-        font-size: 30px;
-        color: #bbbbbb;
-        margin-top: 15px;
+        font-size: 20px;
+        color: #cbd5e1;
+        margin-top: 10px;
+        letter-spacing: 1px;
     }
+
     .mensaje {
-        text-align: center;
-        font-size: 36px;
+        margin-top: 60px;
+        font-size: 28px;
         font-weight: bold;
-        color: #ffffff;
-        margin-top: 50px;
+        color: #facc15;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# 📌 CENTRAR EL LOGO CORRECTAMENTE
+# Centrado del logo con columnas
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     st.image("tenneco-logo-freelogovectors.net_.png", use_container_width=False, width=300)
 
-# Fecha inicial
+# Calcular diferencia de tiempo
 fecha_inicio = datetime(2022, 5, 10, 8, 0, 0)
 ahora = datetime.now()
 diferencia = relativedelta(ahora, fecha_inicio)
 
-# Extraer tiempo
 años = diferencia.years
 meses = diferencia.months
 días = diferencia.days
@@ -72,9 +79,9 @@ horas = diferencia.hours
 minutos = diferencia.minutes
 segundos = diferencia.seconds
 
-# Mostrar bloques
+# Mostrar contador en bloques
 st.markdown(f"""
-<div class="contador-container">
+<div class="contador">
     <div class="bloque">
         <div class="valor">{años}</div>
         <div class="etiqueta">AÑOS</div>
@@ -88,21 +95,21 @@ st.markdown(f"""
         <div class="etiqueta">DÍAS</div>
     </div>
     <div class="bloque">
-        <div class="valor">{horas}</div>
+        <div class="valor">{horas:02d}</div>
         <div class="etiqueta">HORAS</div>
     </div>
     <div class="bloque">
-        <div class="valor">{minutos}</div>
+        <div class="valor">{minutos:02d}</div>
         <div class="etiqueta">MINUTOS</div>
     </div>
     <div class="bloque">
-        <div class="valor">{segundos}</div>
+        <div class="valor">{segundos:02d}</div>
         <div class="etiqueta">SEGUNDOS</div>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# Mensaje final
+# Mensaje inferior
 st.markdown("""
     <div class="mensaje">
         Sin accidentes reportables
