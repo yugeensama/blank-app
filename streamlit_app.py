@@ -1,15 +1,16 @@
 import streamlit as st
+
+# 🟢 ESTA LÍNEA DEBE IR ANTES QUE TODO
+st.set_page_config(page_title="Contador Tenneco", layout="wide")
+
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from streamlit_autorefresh import st_autorefresh
 
-# Refresca cada 1000ms = 1 segundo
+# Refrescar cada segundo
 st_autorefresh(interval=1000, key="contadorrefresh")
 
-# Configuración general
-st.set_page_config(page_title="Contador Tenneco", layout="wide")
-
-# Estilo CSS personalizado
+# Estilo
 st.markdown("""
     <style>
     .stApp {
@@ -34,17 +35,17 @@ st.markdown("""
     unsafe_allow_html=True
 )
 
-# Logo
+# Logo de Tenneco (asegúrate que el PNG esté subido)
 st.image("tenneco_logo.png")
 
-# Fecha inicial del contador (ajusta a tu gusto)
+# Fecha de inicio
 fecha_inicio = datetime(2022, 5, 10, 8, 0, 0)
 
-# Calculamos la diferencia
+# Calculamos el tiempo transcurrido
 ahora = datetime.now()
 diferencia = relativedelta(ahora, fecha_inicio)
 
-# Mostramos el contador
+# Mostrar el contador
 st.markdown(f"""
 <div class="timer">
     {diferencia.years} años<br>
