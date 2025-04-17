@@ -1,6 +1,6 @@
 import streamlit as st
 
-# 🟢 ¡Esto debe ir primero!
+# 🟢 Esto debe ir al principio
 st.set_page_config(page_title="Contador Tenneco", layout="wide")
 
 from datetime import datetime
@@ -20,11 +20,13 @@ st.markdown("""
         font-family: 'Segoe UI', sans-serif;
     }
     .logo-container {
+        display: flex;
         justify-content: center;
         margin-bottom: 50px;
     }
-    img {
-        max-height: 200px;  /* Tamaño grande del logo */
+    .logo-container img {
+        max-height: 200px;
+        height: auto;
         width: auto;
     }
     .contador-container {
@@ -37,24 +39,24 @@ st.markdown("""
     .bloque {
         background-color: #1e222d;
         padding: 60px;
-        border-radius: 30px;  /* Aumento en bordes */
+        border-radius: 30px;
         box-shadow: 0px 0px 30px rgba(0,0,0,0.3);
         text-align: center;
-        min-width: 180px;  /* Aumento en el tamaño de los bloques */
+        min-width: 180px;
     }
     .valor {
-        font-size: 100px;  /* Aumento en el tamaño de los números */
+        font-size: 100px;
         font-weight: bold;
         color: #2ecc71;
     }
     .etiqueta {
-        font-size: 30px;  /* Aumento en el tamaño de la etiqueta */
+        font-size: 30px;
         color: #bbbbbb;
         margin-top: 15px;
     }
     .mensaje {
         text-align: center;
-        font-size: 36px;  /* Aumento en el tamaño de la frase */
+        font-size: 36px;
         font-weight: bold;
         color: #ffffff;
         margin-top: 50px;
@@ -62,19 +64,19 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Cargar y mostrar el logo
-try:
-    st.image("tenneco-logo-freelogovectors.net_.png", use_column_width=True)
-except:
-    st.error("No se pudo cargar el logo. Asegúrate de que la imagen esté en la carpeta correcta.")
+# Mostrar el logo centrado y sin estirarse
+st.markdown("""
+    <div class="logo-container">
+        <img src="tenneco-logo-freelogovectors.net_.png" alt="Tenneco Logo">
+    </div>
+""", unsafe_allow_html=True)
 
-# Fecha de inicio del contador
+# Fecha de inicio
 fecha_inicio = datetime(2022, 5, 10, 8, 0, 0)
 ahora = datetime.now()
 diferencia = relativedelta(ahora, fecha_inicio)
-segundos_totales = int((ahora - fecha_inicio).total_seconds())
 
-# Extraer los valores
+# Extraer tiempo
 años = diferencia.years
 meses = diferencia.months
 días = diferencia.days
@@ -82,7 +84,7 @@ horas = diferencia.hours
 minutos = diferencia.minutes
 segundos = diferencia.seconds
 
-# Mostrar como bloques en columnas
+# Mostrar bloques
 st.markdown(f"""
 <div class="contador-container">
     <div class="bloque">
@@ -112,7 +114,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Frase debajo de los contadores
+# Frase final
 st.markdown("""
     <div class="mensaje">
         Sin accidentes reportables
