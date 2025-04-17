@@ -1,161 +1,140 @@
-import streamlit as st
+import tkinter as tk
+from tkinter import font
 from datetime import datetime
-import time
 import requests
-from PIL import Image
+from PIL import Image, ImageTk
 from io import BytesIO
 
-# Configuración de página
-st.set_page_config(
-    page_title="Reloj Tenneco",
-    layout="wide",
-    initial_sidebar_state="collapsed"
-)
-
-# CSS personalizado
-st.markdown("""
-<style>
-    :root {
-        --tenneco-blue: #0056b3;
-        --tenneco-red: #e31937;
-        --tenneco-gray: #333333;
-    }
+class TennecoClock:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Reloj Tenneco")
+        self.root.attributes('-fullscreen', True)
+        self.root.configure(bg='black')
+        
+        # Fecha de inicio para el contador (cámbiala)
+        self.start_date = datetime(2020, 1, 1)
+        
+        # Configurar fuente
+        self.big_font = font.Font(family='Arial', size=80, weight='bold')
+        self.medium_font = font.Font(family='Arial', size=40)
+        self.small_font = font.Font(family='Arial', size=20)
+        
+        # Cargar logo
+        self.load_logo()
+        
+        # Crear widgets
+        self.create_widgets()
+        
+        # Iniciar actualización
+        self.update_clock()
     
-    body {
-        background-color: #000000;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
-    }
-    
-    .main-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        width: 100vw;
-        background-color: #000;
-    }
-    
-    .logo-container {
-        margin-bottom: 30px;
-    }
-    
-    .clock-container {
-        display: flex;
-        gap: 20px;
-        margin-bottom: 30px;
-    }
-    
-    .counter-container {
-        display: flex;
-        gap: 20px;
-        margin-bottom: 30px;
-    }
-    
-    .time-block, .day-block {
-        background: #1a1a1a;
-        border-radius: 10px;
-        padding: 20px 25px;
-        box-shadow: 0 0 10px rgba(0, 86, 179, 0.3);
-        text-align: center;
-        min-width: 120px;
-        border: 1px solid var(--tenneco-blue);
-    }
-    
-    .time-value, .day-value {
-        font-size: 3.5rem;
-        font-weight: bold;
-        color: var(--tenneco-red);
-        line-height: 1;
-    }
-    
-    .time-label, .day-label {
-        font-size: 1.2rem;
-        color: #ffffff;
-        margin-top: 8px;
-    }
-    
-    .date-display {
-        font-size: 1.5rem;
-        color: var(--tenneco-blue);
-        margin-top: 20px;
-        text-align: center;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-def load_tenneco_logo():
-    try:
-        logo_url = "https://www.tenneco.com/themes/tenneco/images/logo.png"
-        response = requests.get(logo_url, timeout=5)
-        image = Image.open(BytesIO(response.content))
-        return image
-    except:
+    def load_logo(self):
         try:
-            image = Image.open("tenneco-logo.png")
-            return image
+            logo_url = "https://www.tenneco.com/themes/tenneco/images/logo.png"
+            response = requests.get(logo_url, timeout=5)
+            image = Image.open(BytesIO(response.content))
+            
+            # Redimensionar
+            screen_width = self.root.winfo_screenwidth()
+            new_width = screen_width // 4
+            aspect_ratio = image.width / image.height
+            new_height = int(new_width / aspect_ratio)
+            image = image.resize((new_width, new_height), Image.LANCZOS)
+            
+            self.logo_img = ImageTk.PhotoImage(image)
+            self.logo_label = tk.Label(self.root, image=self.logo_img, bg='black')
+            self.logo_label.pack(pady=20)
         except:
-            return None
-
-# Fecha de inicio para el contador de días (cambia esta fecha)
-START_DATE = datetime(2020, 1, 1)
-
-def calculate_days():
-    now = datetime.now()
-    return (now - START_DATE).days
-
-logo = load_tenneco_logo()
-main_container = st.empty()
-
-def update_display():
-    now = datetime.now()
-    days_passed = calculate_days()
+            # Si falla, mostrar texto
+            self.logo_label = tk.Label(self.root, text="TENNECO", 
+                                      font=('Arial', 50, 'bold'), 
+                                      fg='#0056b3', bg='black')
+            self.logo_label.pack(pady=50)
     
-    # Formatear la hora y fecha
-    current_time = now.strftime("%H:%M:%S")
-    current_date = now.strftime("%d/%m/%Y")
-    hours, minutes, seconds = current_time.split(":")
+    def create_widgets(self):
+        # Frame principal
+        main_frame = tk.Frame(self.root, bg='black')
+        main_frame.pack(expand=True)
+        
+        # Frame para el reloj
+        clock_frame = tk.Frame(main_frame, bg='black')
+        clock_frame.pack(pady=20)
+        
+        # Etiquetas del reloj
+        self.time_labels = {
+            'hours': tk.Label(clock_frame, text="00", font=self.big_font, 
+                             fg='#e31937', bg='black'),
+            'sep1': tk.Label(clock_frame, text=":", font=self.big_font, 
+                           fg='white', bg='black'),
+            'minutes': tk.Label(clock_frame, text="00", font=self.big_font, 
+                              fg='#e31937', bg='black'),
+            'sep2': tk.Label(clock_frame, text=":", font=self.big_font, 
+                           fg='white', bg='black'),
+            'seconds': tk.Label(clock_frame, text="00", font=self.big_font, 
+                              fg='#e31937', bg='black')
+        }
+        
+        # Posicionar reloj
+        self.time_labels['hours'].grid(row=0, column=0)
+        self.time_labels['sep1'].grid(row=0, column=1, padx=5)
+        self.time_labels['minutes'].grid(row=0, column=2)
+        self.time_labels['sep2'].grid(row=0, column=3, padx=5)
+        self.time_labels['seconds'].grid(row=0, column=4)
+        
+        # Etiquetas descriptivas
+        tk.Label(clock_frame, text="Horas", font=self.small_font, 
+                fg='white', bg='black').grid(row=1, column=0)
+        tk.Label(clock_frame, text="Minutos", font=self.small_font, 
+                fg='white', bg='black').grid(row=1, column=2)
+        tk.Label(clock_frame, text="Segundos", font=self.small_font, 
+                fg='white', bg='black').grid(row=1, column=4)
+        
+        # Contador de días
+        days_frame = tk.Frame(main_frame, bg='black')
+        days_frame.pack(pady=30)
+        
+        self.days_label = tk.Label(days_frame, text="0", font=self.big_font, 
+                                 fg='#e31937', bg='black')
+        self.days_label.pack()
+        
+        tk.Label(days_frame, text=f"DÍAS DESDE {self.start_date.strftime('%d/%m/%Y')}", 
+                font=self.small_font, fg='white', bg='black').pack()
+        
+        # Fecha actual
+        self.date_label = tk.Label(main_frame, text="", font=self.medium_font, 
+                                 fg='#0056b3', bg='black')
+        self.date_label.pack(pady=20)
+        
+        # Botón de salida
+        exit_button = tk.Button(self.root, text="Salir (ESC)", font=self.small_font, 
+                               command=self.root.destroy, bg='red', fg='white')
+        exit_button.pack(pady=20)
+        
+        # Configurar tecla ESC para salir
+        self.root.bind('<Escape>', lambda e: self.root.destroy())
     
-    # HTML del display
-    display_html = f"""
-    <div class="main-container">
-        <div class="logo-container">
-            {f'<img src="https://www.tenneco.com/themes/tenneco/images/logo.png" width="250">' if logo else '<h1 style="color: var(--tenneco-blue);">TENNECO</h1>'}
-        </div>
-        
-        <div class="clock-container">
-            <div class="time-block">
-                <div class="time-value">{hours}</div>
-                <div class="time-label">HORAS</div>
-            </div>
-            <div class="time-block">
-                <div class="time-value">{minutes}</div>
-                <div class="time-label">MINUTOS</div>
-            </div>
-            <div class="time-block">
-                <div class="time-value">{seconds}</div>
-                <div class="time-label">SEGUNDOS</div>
-            </div>
-        </div>
-        
-        <div class="counter-container">
-            <div class="day-block">
-                <div class="day-value">{days_passed}</div>
-                <div class="day-label">DÍAS DESDE</div>
-                <div class="day-label">{START_DATE.strftime('%d/%m/%Y')}</div>
-            </div>
-        </div>
-        
-        <div class="date-display">Fecha actual: {current_date}</div>
-    </div>
-    """
+    def calculate_days(self):
+        return (datetime.now() - self.start_date).days
     
-    main_container.markdown(display_html, unsafe_allow_html=True)
+    def update_clock(self):
+        now = datetime.now()
+        
+        # Actualizar reloj
+        self.time_labels['hours'].config(text=now.strftime("%H"))
+        self.time_labels['minutes'].config(text=now.strftime("%M"))
+        self.time_labels['seconds'].config(text=now.strftime("%S"))
+        
+        # Actualizar contador de días
+        self.days_label.config(text=self.calculate_days())
+        
+        # Actualizar fecha
+        self.date_label.config(text=now.strftime("%A, %d %B %Y"))
+        
+        # Programar próxima actualización
+        self.root.after(1000, self.update_clock)
 
-# Configurar el auto-refresh
-update_display()
-time.sleep(1)
-st.experimental_rerun()
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = TennecoClock(root)
+    root.mainloop()
