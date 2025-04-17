@@ -8,10 +8,90 @@ from io import BytesIO
 # Configurar la página para modo pantalla completa
 st.set_page_config(layout="wide")
 
+# Estilo CSS personalizado
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+:root {
+    --tenneco-blue: #0056b3;
+    --tenneco-red: #e31937;
+    --tenneco-gray: #333333;
+}
+
+body {
+    background-color: #000000;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.digital-clock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #000000;
+}
+
+.tenneco-logo {
+    margin-bottom: 2rem;
+    max-width: 300px;
+}
+
+.time-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.time-box {
+    background: linear-gradient(145deg, #1a1a1a, #333333);
+    border-radius: 15px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 10px 25px rgba(0, 86, 179, 0.3);
+    text-align: center;
+    min-width: 150px;
+    border: 2px solid var(--tenneco-blue);
+}
+
+.time-value {
+    font-size: 5rem;
+    font-weight: 700;
+    color: var(--tenneco-red);
+    text-shadow: 0 0 10px rgba(227, 25, 55, 0.7);
+    line-height: 1;
+}
+
+.time-label {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.date-display {
+    font-size: 2rem;
+    color: var(--tenneco-blue);
+    margin-top: 2rem;
+    letter-spacing: 3px;
+}
+
+.footer {
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+    color: #666666;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # Función para cargar el logo de Tenneco
 def load_tenneco_logo():
     try:
-        # URL del logo de Tenneco
         logo_url = "https://www.tenneco.com/wp-content/uploads/2019/10/tenneco-logo.png"
         response = requests.get(logo_url)
         image = Image.open(BytesIO(response.content))
@@ -19,66 +99,61 @@ def load_tenneco_logo():
     except:
         return None
 
-# Función para calcular el tiempo transcurrido
-def calculate_time_passed(start_date):
-    now = datetime.now()
-    delta = now - start_date
-    
-    total_seconds = delta.total_seconds()
-    seconds = int(total_seconds % 60)
-    minutes = int((total_seconds // 60) % 60)
-    hours = int((total_seconds // 3600) % 24)
-    days = delta.days % 30  # Aproximación
-    months = delta.days // 30 % 12
-    years = delta.days // 365
-    
-    return years, months, days, hours, minutes, seconds
+# Función para formatear el tiempo con dos dígitos
+def format_time(value):
+    return f"{value:02d}"
 
 # Mostrar el logo de Tenneco
 logo = load_tenneco_logo()
-if logo:
-    st.image(logo, width=300)
-else:
-    st.title("Tenneco Time Counter")
 
-# Fecha de referencia (puedes cambiarla)
-reference_date = datetime(2000, 1, 1)  # 1 de Enero del 2000
-
-# Crear placeholders para los contadores
-year_ph = st.empty()
-month_ph = st.empty()
-day_ph = st.empty()
-hour_ph = st.empty()
-minute_ph = st.empty()
-second_ph = st.empty()
-
-# Estilo CSS para hacer los números grandes
-st.markdown("""
-<style>
-.big-font {
-    font-size:80px !important;
-    font-weight: bold;
-    text-align: center;
-    color: white;
-    background-color: black;
-    padding: 20px;
-    border-radius: 10px;
-    margin: 10px 0;
-}
-</style>
-""", unsafe_allow_html=True)
-
-# Bucle para actualizar el contador
-while True:
-    years, months, days, hours, minutes, seconds = calculate_time_passed(reference_date)
+# Contenedor principal
+with st.container():
+    col1, col2, col3 = st.columns([1, 3, 1])
     
-    # Actualizar los placeholders con los nuevos valores
-    year_ph.markdown(f"<p class='big-font'>Años: {years}</p>", unsafe_allow_html=True)
-    month_ph.markdown(f"<p class='big-font'>Meses: {months}</p>", unsafe_allow_html=True)
-    day_ph.markdown(f"<p class='big-font'>Días: {days}</p>", unsafe_allow_html=True)
-    hour_ph.markdown(f"<p class='big-font'>Horas: {hours}</p>", unsafe_allow_html=True)
-    minute_ph.markdown(f"<p class='big-font'>Minutos: {minutes}</p>", unsafe_allow_html=True)
-    second_ph.markdown(f"<p class='big-font'>Segundos: {seconds}</p>", unsafe_allow_html=True)
+    with col2:
+        st.markdown('<div class="digital-clock">', unsafe_allow_html=True)
+        
+        if logo:
+            st.image(logo, width=300, output_format="PNG")
+        else:
+            st.markdown('<h1 style="text-align: center; color: var(--tenneco-blue);">TENNECO</h1>', unsafe_allow_html=True)
+        
+        # Placeholders para el reloj
+        time_ph = st.empty()
+        date_ph = st.empty()
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+
+# Bucle principal para actualizar el reloj
+while True:
+    now = datetime.now()
+    
+    # Obtener componentes de fecha y hora
+    current_time = now.strftime("%H:%M:%S")
+    current_date = now.strftime("%A, %d %B %Y")
+    hours, minutes, seconds = current_time.split(":")
+    
+    # Crear el HTML para el reloj digital
+    clock_html = f"""
+    <div class="time-container">
+        <div class="time-box">
+            <div class="time-value">{hours}</div>
+            <div class="time-label">Horas</div>
+        </div>
+        <div class="time-box">
+            <div class="time-value">{minutes}</div>
+            <div class="time-label">Minutos</div>
+        </div>
+        <div class="time-box">
+            <div class="time-value">{seconds}</div>
+            <div class="time-label">Segundos</div>
+        </div>
+    </div>
+    """
+    
+    # Actualizar los placeholders
+    time_ph.markdown(clock_html, unsafe_allow_html=True)
+    date_ph.markdown(f'<div class="date-display">{current_date}</div>', unsafe_allow_html=True)
     
     # Esperar 1 segundo antes de la próxima actualización
     time.sleep(1)
