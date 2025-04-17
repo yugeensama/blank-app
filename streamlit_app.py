@@ -26,6 +26,7 @@ st.markdown("""
     }
     img {
         max-height: 200px;  /* Tamaño grande del logo */
+        width: auto;
     }
     .contador-container {
         display: flex;
@@ -62,12 +63,11 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Logo Tenneco centrado en un div
-st.markdown("""
-    <div class="logo-container">
-        <img src="tenneco-logo-freelogovectors.net_.png" alt="Tenneco Logo">
-    </div>
-""", unsafe_allow_html=True)
+# Cargar y mostrar el logo
+try:
+    st.image("tenneco-logo-freelogovectors.net_.png", use_column_width=True)
+except:
+    st.error("No se pudo cargar el logo. Asegúrate de que la imagen esté en la carpeta correcta.")
 
 # Fecha de inicio del contador
 fecha_inicio = datetime(2022, 5, 10, 8, 0, 0)
