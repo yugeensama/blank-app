@@ -1,6 +1,6 @@
 import streamlit as st
 
-# 🟢 Esto debe ir al principio
+# Configuración de la página (esto siempre primero)
 st.set_page_config(page_title="Contador Tenneco", layout="wide")
 
 from datetime import datetime
@@ -10,7 +10,7 @@ from streamlit_autorefresh import st_autorefresh
 # Auto-refresh cada segundo
 st_autorefresh(interval=1000, key="contadorrefresh")
 
-# Estilos CSS
+# CSS para personalizar estilo
 st.markdown("""
     <style>
     .stApp {
@@ -18,16 +18,6 @@ st.markdown("""
         color: #ffffff;
         padding: 2rem;
         font-family: 'Segoe UI', sans-serif;
-    }
-    .logo-container {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 50px;
-    }
-    .logo-container img {
-        max-height: 200px;
-        height: auto;
-        width: auto;
     }
     .contador-container {
         display: flex;
@@ -64,14 +54,12 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Mostrar el logo centrado y sin estirarse
-st.markdown("""
-    <div class="logo-container">
-        <img src="tenneco-logo-freelogovectors.net_.png" alt="Tenneco Logo">
-    </div>
-""", unsafe_allow_html=True)
+# 📌 CENTRAR EL LOGO CORRECTAMENTE
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    st.image("tenneco-logo-freelogovectors.net_.png", use_column_width=False, width=300)
 
-# Fecha de inicio
+# Fecha inicial
 fecha_inicio = datetime(2022, 5, 10, 8, 0, 0)
 ahora = datetime.now()
 diferencia = relativedelta(ahora, fecha_inicio)
@@ -114,7 +102,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Frase final
+# Mensaje final
 st.markdown("""
     <div class="mensaje">
         Sin accidentes reportables
