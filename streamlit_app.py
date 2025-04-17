@@ -28,34 +28,34 @@ st.markdown("""
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 40px;
+        gap: 60px;
         margin-top: 30px;
     }
 
     .bloque {
-        background-color: rgba(255, 255, 255, 0.05);
-        padding: 40px 30px;
-        border-radius: 20px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.4);
-        min-width: 160px;
+        background-color: rgba(255, 255, 255, 0.07);
+        padding: 60px 50px;
+        border-radius: 30px;
+        box-shadow: 0 0 30px rgba(0,0,0,0.4);
+        min-width: 200px;
     }
 
     .valor {
-        font-size: 64px;
-        font-weight: 700;
+        font-size: 120px;
+        font-weight: 800;
         color: #4ade80;
     }
 
     .etiqueta {
-        font-size: 20px;
+        font-size: 36px;
         color: #cbd5e1;
-        margin-top: 10px;
+        margin-top: 15px;
         letter-spacing: 1px;
     }
 
     .mensaje {
-        margin-top: 60px;
-        font-size: 28px;
+        margin-top: 80px;
+        font-size: 50px;
         font-weight: bold;
         color: #facc15;
     }
@@ -65,7 +65,7 @@ st.markdown("""
 # Centrado del logo con columnas
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    st.image("tenneco-logo-freelogovectors.net_.png", use_container_width=False, width=300)
+    st.image("tenneco-logo-freelogovectors.net_.png", use_container_width=False, width=400)
 
 # Calcular diferencia de tiempo
 fecha_inicio = datetime(2022, 5, 10, 8, 0, 0)
@@ -79,7 +79,7 @@ horas = diferencia.hours
 minutos = diferencia.minutes
 segundos = diferencia.seconds
 
-# Mostrar contador en bloques
+# Mostrar contador
 st.markdown(f"""
 <div class="contador">
     <div class="bloque">
@@ -109,7 +109,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# Mensaje inferior
+# Mensaje de seguridad
 st.markdown("""
     <div class="mensaje">
         Sin accidentes reportables
