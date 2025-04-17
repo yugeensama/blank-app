@@ -57,7 +57,7 @@ st.markdown("""
 # 📌 CENTRAR EL LOGO CORRECTAMENTE
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
-    st.image("tenneco-logo-freelogovectors.net_.png", use_column_width=False, width=300)
+    st.image("tenneco-logo-freelogovectors.net_.png", use_container_width=False, width=300)
 
 # Fecha inicial
 fecha_inicio = datetime(2022, 5, 10, 8, 0, 0)
