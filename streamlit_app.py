@@ -1,56 +1,55 @@
 import streamlit as st
 from datetime import datetime
-import requests
-from PIL import Image
-from io import BytesIO
+from dateutil.relativedelta import relativedelta
+from streamlit_autorefresh import st_autorefresh
 
-# Configuración de página
-st.set_page_config(
-    page_title="Reloj Tenneco",
-    layout="wide",
-    initial_sidebar_state="collapsed"
+# Refresca cada 1000ms = 1 segundo
+st_autorefresh(interval=1000, key="contadorrefresh")
+
+# Configuración general
+st.set_page_config(page_title="Contador Tenneco", layout="wide")
+
+# Estilo CSS personalizado
+st.markdown("""
+    <style>
+    .stApp {
+        background-color: black;
+        color: white;
+        text-align: center;
+        padding-top: 30px;
+    }
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-height: 150px;
+    }
+    .timer {
+        font-size: 80px;
+        font-weight: bold;
+        margin-top: 50px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
 )
 
-# Cargar logo
-def load_tenneco_logo():
-    try:
-        logo_url = "https://www.tenneco.com/themes/tenneco/images/logo.png"
-        response = requests.get(logo_url, timeout=5)
-        image = Image.open(BytesIO(response.content))
-        return image
-    except:
-        try:
-            return Image.open("tenneco-logo.png")
-        except:
-            return None
+# Logo
+st.image("tenneco_logo.png")
 
-logo = load_tenneco_logo()
+# Fecha inicial del contador (ajusta a tu gusto)
+fecha_inicio = datetime(2022, 5, 10, 8, 0, 0)
 
-# Mostrar logo
-if logo:
-    st.image(logo, width=300)
-else:
-    st.title("TENNECO")
+# Calculamos la diferencia
+ahora = datetime.now()
+diferencia = relativedelta(ahora, fecha_inicio)
 
-# Refrescar cada segundo
-st_autorefresh = st.experimental_rerun if not hasattr(st, 'autorefresh') else st.autorefresh
-st_autorefresh(interval=1000, key="refresh")
-
-# Obtener fecha y hora actual
-now = datetime.now()
-current_time = now.strftime("%H:%M:%S")
-current_date = now.strftime("%A, %d %B %Y")
-
-# Días desde una fecha fija
-start_date = datetime(2024, 1, 1)
-days_elapsed = (now - start_date).days
-
-# Mostrar información
-st.markdown("## ⏰ Reloj Actual")
-st.write(f"**Hora actual:** {current_time}")
-st.write(f"**Fecha actual:** {current_date}")
-st.write(f"**Días desde el 1 de enero de 2024:** {days_elapsed}")
-
-# Botón para reiniciar manualmente
-if st.button("Reiniciar"):
-    st.experimental_rerun()
+# Mostramos el contador
+st.markdown(f"""
+<div class="timer">
+    {diferencia.years} años<br>
+    {diferencia.months} meses<br>
+    {diferencia.days} días<br>
+    {diferencia.hours} horas
+</div>
+""", unsafe_allow_html=True)
