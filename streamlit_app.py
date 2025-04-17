@@ -68,7 +68,7 @@ with col2:
     st.image("tenneco-logo-freelogovectors.net_.png", use_container_width=False, width=400)
 
 # Calcular diferencia de tiempo
-fecha_inicio = datetime(2022, 5, 10, 8, 0, 0)
+fecha_inicio = datetime(2022, 1, 25, 0, 0, 0)
 ahora = datetime.now()
 diferencia = relativedelta(ahora, fecha_inicio)
 
