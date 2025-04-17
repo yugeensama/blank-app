@@ -123,7 +123,7 @@ def update_display():
     display_html = f"""
     <div class="main-container">
         <div class="logo-container">
-            {f'<img src="https://www.tenneco.com/themes/tenneco/images/logo.png" width="250">' if logo else '<h1 style="color: var(--tenneco-blue);">TENNECO</h1>'}
+            {f'<img src="https://www.tenneco.com/themes/tenneco/images/logo.png" width="250">' if logo else '<h1 style="color: var(--tenneco-blue);">Manu</h1>'}
         </div>
         
         <div class="clock-container">
