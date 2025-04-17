@@ -51,14 +51,21 @@ st.markdown("""
         color: #bbbbbb;
         margin-top: 10px;
     }
+    .mensaje {
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        color: #ffffff;
+        margin-top: 40px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# Logo Tenneco (asegúrate de subirlo al repositorio)
-st.image("tenneco-logo-freelogovectors.net_.png")
+# Logo Tenneco centrado
+st.image("tenneco_logo.png")
 
 # Fecha de inicio del contador
-fecha_inicio = datetime(2022, 5, 10, 8, 0, 0)
+fecha_inicio = datetime(2022, 1, 25, 0, 0, 0)
 ahora = datetime.now()
 diferencia = relativedelta(ahora, fecha_inicio)
 segundos_totales = int((ahora - fecha_inicio).total_seconds())
@@ -99,4 +106,11 @@ st.markdown(f"""
         <div class="etiqueta">SEGUNDOS</div>
     </div>
 </div>
+""", unsafe_allow_html=True)
+
+# Frase debajo de los contadores
+st.markdown("""
+    <div class="mensaje">
+        Sin accidentes reportables
+    </div>
 """, unsafe_allow_html=True)
