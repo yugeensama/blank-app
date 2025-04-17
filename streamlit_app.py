@@ -62,7 +62,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Logo Tenneco centrado
-st.image("tenneco_logo.png")
+st.image("tenneco-logo-freelogovectors.net_.png")
 
 # Fecha de inicio del contador
 fecha_inicio = datetime(2022, 1, 25, 0, 0, 0)
@@ -111,6 +111,6 @@ st.markdown(f"""
 # Frase debajo de los contadores
 st.markdown("""
     <div class="mensaje">
-        Sin accidentes reportables
+        Sin accidentes reportables desde:
     </div>
 """, unsafe_allow_html=True)
